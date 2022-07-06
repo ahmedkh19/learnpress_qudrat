@@ -4,7 +4,7 @@
  * Plugin URI: https://thinkvolc.com
  * Description: تم تعديل الإضافة لتتوافق مع اختبار القدرات والتحصيلي
  * Author: Thinkvolc
- * Version: 4.1.6.8
+ * Version: 4.1.6.7
  * Author URI: http://thinkvolc.com
  * Requires at least: 5.6
  * Tested up to: 6.0
@@ -1081,3 +1081,10 @@ acf_add_local_field_group(array(
 ));
 
 endif;		
+// Disable updates for learnpress
+
+add_filter('site_transient_update_plugins', 'remove_update_notification');
+function remove_update_notification($value) {
+     unset($value->response[ plugin_basename(__FILE__) ]);
+     return $value;
+} 
