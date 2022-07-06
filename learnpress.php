@@ -972,3 +972,58 @@ function change_paragraph() {
    die();
 
 }
+
+function cptui_register_my_cpts_paragraph() {
+
+	/**
+	 * Post Type: paragraphs.
+	 */
+
+	$labels = [
+		"name" => __( "paragraphs", "twentytwentytwo" ),
+		"singular_name" => __( "paragraph", "twentytwentytwo" ),
+		"menu_name" => __( "استيعاب المقروء", "twentytwentytwo" ),
+		"all_items" => __( "جميع قطع استيعاب المقروء", "twentytwentytwo" ),
+		"add_new" => __( "إضافة جديد", "twentytwentytwo" ),
+		"add_new_item" => __( "إضافة قطعة جديدة", "twentytwentytwo" ),
+		"edit_item" => __( "التعديل على القطعة", "twentytwentytwo" ),
+		"new_item" => __( "قطعة جديدة", "twentytwentytwo" ),
+		"view_item" => __( "رؤية القطعة", "twentytwentytwo" ),
+		"view_items" => __( "رؤية جميع القطع", "twentytwentytwo" ),
+		"search_items" => __( "ابحث عن قطعة", "twentytwentytwo" ),
+		"not_found" => __( "لم يتم ايجاد القطعة المطلوبة", "twentytwentytwo" ),
+		"not_found_in_trash" => __( "لم يتم ايجاد القطعة المطلوبة في سلة المهملات", "twentytwentytwo" ),
+	];
+
+	$args = [
+		"label" => __( "paragraphs", "twentytwentytwo" ),
+		"labels" => $labels,
+		"description" => "قطع استيعاب المقروء",
+		"public" => true,
+		"publicly_queryable" => true,
+		"show_ui" => true,
+		"show_in_rest" => true,
+		"rest_base" => "",
+		"rest_controller_class" => "WP_REST_Posts_Controller",
+		"rest_namespace" => "wp/v2",
+		"has_archive" => false,
+		"show_in_menu" => true,
+		"show_in_nav_menus" => true,
+		"delete_with_user" => false,
+		"exclude_from_search" => false,
+		"capability_type" => "post",
+		"map_meta_cap" => true,
+		"hierarchical" => false,
+		"can_export" => true,
+		"rewrite" => [ "slug" => "paragraph", "with_front" => false ],
+		"query_var" => true,
+		"menu_position" => 3,
+		"menu_icon" => "dashicons-book-alt",
+		"supports" => [ "title", "editor" ],
+		"show_in_graphql" => false,
+	];
+
+	register_post_type( "paragraph", $args );
+}
+
+add_action( 'init', 'cptui_register_my_cpts_paragraph' );
