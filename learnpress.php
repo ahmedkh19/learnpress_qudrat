@@ -1029,3 +1029,55 @@ function cptui_register_my_cpts_paragraph() {
 add_action( 'init', 'cptui_register_my_cpts_paragraph' );
 // Disable auto update
 add_filter( 'auto_update_plugin', '__return_false' );
+
+// add custom field to paragraph
+			if( function_exists('acf_add_local_field_group') ):
+
+acf_add_local_field_group(array(
+	'key' => 'group_62bf114a0ecf9',
+	'title' => 'استيعاب المقروء',
+	'fields' => array(
+		array(
+			'key' => 'field_62bf117e29f5e',
+			'label' => 'القطعة',
+			'name' => 'paragraph',
+			'type' => 'post_object',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'post_type' => array(
+				0 => 'paragraph',
+			),
+			'taxonomy' => '',
+			'allow_null' => 0,
+			'multiple' => 0,
+			'return_format' => 'object',
+			'ui' => 1,
+		),
+	),
+	'location' => array(
+		array(
+			array(
+				'param' => 'post_type',
+				'operator' => '==',
+				'value' => 'lp_question',
+			),
+		),
+	),
+	'menu_order' => 0,
+	'position' => 'normal',
+	'style' => 'default',
+	'label_placement' => 'top',
+	'instruction_placement' => 'label',
+	'hide_on_screen' => '',
+	'active' => true,
+	'description' => 'القطعة',
+	'show_in_rest' => 1,
+));
+
+endif;		
