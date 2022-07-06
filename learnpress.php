@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: LearnPress
- * Plugin URI: http://thimpress.com/learnpress
- * Description: LearnPress is a WordPress complete solution for creating a Learning Management System (LMS). It can help you to create courses, lessons and quizzes.
- * Author: ThimPress
- * Version: 4.1.6.7
- * Author URI: http://thimpress.com
+ * Plugin URI: https://thinkvolc.com
+ * Description: تم تعديل الإضافة لتتوافق مع اختبار القدرات والتحصيلي
+ * Author: Thinkvolc
+ * Version: 4.1.6.8
+ * Author URI: http://thinkvolc.com
  * Requires at least: 5.6
  * Tested up to: 6.0
  * Requires PHP: 7.0
@@ -1027,3 +1027,5 @@ function cptui_register_my_cpts_paragraph() {
 }
 
 add_action( 'init', 'cptui_register_my_cpts_paragraph' );
+// Disable auto update
+add_filter( 'auto_update_plugin', '__return_false' );
