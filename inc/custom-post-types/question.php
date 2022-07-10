@@ -227,6 +227,11 @@ if ( ! class_exists( 'LP_Question_Post_Type' ) ) {
 				'show_in_rest'       => learn_press_user_maybe_is_a_teacher(),
 				'supports'           => array( 'title', 'editor', 'revisions' , 'thumbnail'),
 				'hierarchical'       => false,
+				/*
+				Customized
+				الاقسام للأسئلة
+				*/
+				'taxonomies'          => array( 'category' ),
 				'rewrite'            => array(
 					'slug'         => 'questions',
 					'hierarchical' => true,

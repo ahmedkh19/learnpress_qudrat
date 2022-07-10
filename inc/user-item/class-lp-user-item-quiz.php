@@ -481,6 +481,7 @@ class LP_User_Item_Quiz extends LP_User_Item {
 			'time_spend'        => '',
 			'passing_grade'     => '',
 			'pass'              => 0,
+			'categories'		=> array()
 		);
 
 		try {
@@ -504,22 +505,33 @@ class LP_User_Item_Quiz extends LP_User_Item {
 				throw new Exception();
 			}
 
-			$question_ids             = $quiz->get_questions();
-			$result['mark']           = $quiz->get_mark();
-			$result['question_count'] = count( $question_ids );
-			$result['time_spend']     = $this->get_time_interval( 'display' );
-			$result['passing_grade']  = $quiz->get_passing_grade();
-			$checked_questions        = $this->get_checked_questions();
+			$question_ids             			= $quiz->get_questions();
+			$questions_categories  				= []; // Customized
+			$result['mark']           			= $quiz->get_mark();
+			$result['question_count'] 			= count( $question_ids );
+			$result['time_spend']     			= $this->get_time_interval( 'display' );
+			$result['passing_grade']  			= $quiz->get_passing_grade();
+			$checked_questions        			= $this->get_checked_questions();
 
 			foreach ( $question_ids as $question_id ) {
 				$question = LP_Question::get_question( $question_id );
 				$point    = floatval( $question->get_mark() );
-
 				// if ( ! array_key_exists( 'instant_check', $answered ) || array_key_exists( $question_id, $answered ) ) {
 				$result['questions'][ $question_id ]             = array();
 				$result['questions'][ $question_id ]['answered'] = $answered[ $question_id ] ?? '';
-
 				// }
+
+				/*
+					Customized
+					لمعرفة نتائج الاقسام
+				*/
+
+				$question_categories = wp_get_post_categories($question_id, array( 'fields' => 'names' ));
+				if ($question_categories) {
+					foreach($question_categories as $name) {
+						$questions_categories[$name]['total_questions']++;
+					}
+				}
 
 				if ( isset( $answered[ $question_id ] ) ) { // User's answer
 					$result['question_answered']++;
@@ -528,9 +540,17 @@ class LP_User_Item_Quiz extends LP_User_Item {
 					if ( $check['correct'] ) {
 						$result['question_correct']++;
 						$result['user_mark'] += $point;
-
 						$result['questions'][ $question_id ]['correct'] = true;
 						$result['questions'][ $question_id ]['mark']    = $point;
+						/*
+							Customized
+							لمعرفة نتائج الاقسام
+						*/
+						if ($question_categories) {
+							foreach($question_categories as $name) {
+								$questions_categories[$name]['correct_answers']++;
+							}
+						}
 					} else {
 						if ( $quiz->get_negative_marking() ) {
 							$result['user_mark'] -= $point;
@@ -563,6 +583,21 @@ class LP_User_Item_Quiz extends LP_User_Item {
 					);
 				}
 			}
+			/*
+				Customized
+				لمعرفة نتائج الاقسام
+			*/
+			foreach($questions_categories as $name => $array ) {
+				$cat = $questions_categories[$name];
+				if (!$cat['correct_answers'] || !isset($cat['correct_answers'])) {
+					$questions_categories[$name]['correct_answers'] = 0;
+					$questions_categories[$name]['score'] = 0;
+				} else {
+					$questions_categories[$name]['score'] = round(($cat['correct_answers']/$cat['total_questions']) * 100, 2);
+				}
+			}
+
+			$result['categories'] = $questions_categories;
 
 			if ( $result['user_mark'] < 0 ) {
 				$result['user_mark'] = 0;
@@ -586,7 +621,6 @@ class LP_User_Item_Quiz extends LP_User_Item {
 		} catch ( Throwable $e ) {
 
 		}
-
 		return $result;
 	}
 

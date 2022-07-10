@@ -248,4 +248,3 @@ if ( ! class_exists( 'LP_Course' ) ) {
 		}
 	}
 }
-
