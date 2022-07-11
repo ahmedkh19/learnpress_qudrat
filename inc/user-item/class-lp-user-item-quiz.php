@@ -481,7 +481,7 @@ class LP_User_Item_Quiz extends LP_User_Item {
 			'time_spend'        => '',
 			'passing_grade'     => '',
 			'pass'              => 0,
-			'categories'		=> array()
+			'tags'		=> array()
 		);
 
 		try {
@@ -506,7 +506,7 @@ class LP_User_Item_Quiz extends LP_User_Item {
 			}
 
 			$question_ids             			= $quiz->get_questions();
-			$questions_categories  				= []; // Customized
+			$questions_tags  				= []; // Customized
 			$result['mark']           			= $quiz->get_mark();
 			$result['question_count'] 			= count( $question_ids );
 			$result['time_spend']     			= $this->get_time_interval( 'display' );
@@ -526,10 +526,16 @@ class LP_User_Item_Quiz extends LP_User_Item {
 					لمعرفة نتائج الاقسام
 				*/
 
-				$question_categories = wp_get_post_categories($question_id, array( 'fields' => 'names' ));
-				if ($question_categories) {
-					foreach($question_categories as $name) {
-						$questions_categories[$name]['total_questions']++;
+				$question_tags = get_terms([
+					'taxonomy'  => 'question_tag',
+					'object_ids' => $question_id,
+					'hide_empty'    => true,
+					'fields'	=> 'names'
+				]);
+					
+				if ($question_tags) {
+					foreach($question_tags as $name) {
+						$questions_tags[$name]['total_questions']++;
 					}
 				}
 
@@ -546,9 +552,9 @@ class LP_User_Item_Quiz extends LP_User_Item {
 							Customized
 							لمعرفة نتائج الاقسام
 						*/
-						if ($question_categories) {
-							foreach($question_categories as $name) {
-								$questions_categories[$name]['correct_answers']++;
+						if ($question_tags) {
+							foreach($question_tags as $name) {
+								$questions_tags[$name]['correct_answers']++;
 							}
 						}
 					} else {
@@ -587,17 +593,17 @@ class LP_User_Item_Quiz extends LP_User_Item {
 				Customized
 				لمعرفة نتائج الاقسام
 			*/
-			foreach($questions_categories as $name => $array ) {
-				$cat = $questions_categories[$name];
+			foreach($questions_tags as $name => $array ) {
+				$cat = $questions_tags[$name];
 				if (!$cat['correct_answers'] || !isset($cat['correct_answers'])) {
-					$questions_categories[$name]['correct_answers'] = 0;
-					$questions_categories[$name]['score'] = 0;
+					$questions_tags[$name]['correct_answers'] = 0;
+					$questions_tags[$name]['score'] = 0;
 				} else {
-					$questions_categories[$name]['score'] = round(($cat['correct_answers']/$cat['total_questions']) * 100, 2);
+					$questions_tags[$name]['score'] = round(($cat['correct_answers']/$cat['total_questions']) * 100, 2);
 				}
 			}
 
-			$result['categories'] = $questions_categories;
+			$result['tags'] = $questions_tags;
 
 			if ( $result['user_mark'] < 0 ) {
 				$result['user_mark'] = 0;

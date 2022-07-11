@@ -1024,6 +1024,18 @@ function cptui_register_my_cpts_paragraph() {
 	];
 
 	register_post_type( "paragraph", $args );
+	$tags = get_terms([
+          'taxonomy'  => 'question_tag',
+		  'object_ids' => 132,
+          'hide_empty'    => true,
+		  'fields'	=> 'names'
+        ]);
+	var_dump($tags);
+	$question_tags = get_the_tags(132);
+	echo var_dump($tags);
+					foreach($tags as $tag) {
+						echo '<h1>' . $tag . '</h1>';
+					}
 }
 
 add_action( 'init', 'cptui_register_my_cpts_paragraph' );
