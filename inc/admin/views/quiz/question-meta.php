@@ -141,9 +141,43 @@ jQuery(function($) {
                         });
 
                     }
+                    // $('select').selectize({
+                    //     sortField: 'text',
+                    //     onChange: function(value) {
+                    //         let id = value;
+                    //         var settings = {
+                    //             "url": "<?= admin_url('admin-ajax.php?action=change_paragraph&question_id='); ?>" +
+                    //                 id + "&paragraph_id=" + e.target.options[e.target.options
+                    //                     .selectedIndex].value,
+                    //             "method": "GET",
+                    //             "timeout": 0,
+                    //         };
+
+                    //         $.ajax(settings).done(function(response) {
+                    //             console.log(response);
+                    //         });
+                    //     }
+                    // });
+
                     $('select').selectize({
-                        sortField: 'text'
+                        sortField: 'text',
                     });
+                    $("select").on("change", function(value) {
+                        question_id = $(this).attr('id')
+                        question_id = question_id.slice(10)
+                        paragraph_id = $(this).find(":selected").val()
+                        var settings = {
+                            "url": "<?= admin_url('admin-ajax.php?action=change_paragraph&question_id='); ?>" +
+                                question_id + "&paragraph_id=" +
+                                paragraph_id,
+                            "method": "GET",
+                            "timeout": 0,
+                        };
+
+                        $.ajax(settings).done(function(response) {
+                            console.log(response);
+                        });
+                    })
                 }
             });
 

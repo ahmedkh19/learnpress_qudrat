@@ -187,10 +187,25 @@ jQuery(function($) {
                     $('ul.question-types').click(function(e) {
                         setTimeout(() => {
                             $('select').selectize({
-                                sortField: 'text'
+                                sortField: 'text',
                             });
                         }, 500);
+                        $("select").on("change", function(value) {
+                            question_id = $(this).attr('id')
+                            question_id = question_id.slice(10)
+                            paragraph_id = $(this).find(":selected").val()
+                            var settings = {
+                                "url": "<?= admin_url('admin-ajax.php?action=change_paragraph&question_id='); ?>" +
+                                    question_id + "&paragraph_id=" +
+                                    paragraph_id,
+                                "method": "GET",
+                                "timeout": 0,
+                            };
 
+                            $.ajax(settings).done(function(response) {
+                                console.log(response);
+                            });
+                        })
                     });
                 }
             },
