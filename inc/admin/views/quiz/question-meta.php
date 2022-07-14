@@ -5,6 +5,11 @@
  * @since 3.0.0
  */
 ?>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"
+    integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css"
+    integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
 
 <script type="text/x-template" id="tmpl-lp-quiz-question-meta">
     <div class="quiz-question-options">
@@ -72,6 +77,7 @@
 										// Get the 'Profiles' post type
 										$args = array(
 											'post_type' => 'paragraph',
+                                            'posts_per_page'   => -1,
 										);
 										$loop = new WP_Query($args);
 										while($loop->have_posts()): $loop->the_post();
@@ -98,6 +104,7 @@ jQuery(function($) {
     var $Vue = window.$Vue || Vue;
     var $store = window.LP_Quiz_Store;
     $(document).ready(function() {
+
         setTimeout(() => {
             // get all paragraph menus (get all elements their id starts with paragraph-)
             const paragraph = document.querySelectorAll(`[id^="paragraph-"]`);
@@ -134,13 +141,16 @@ jQuery(function($) {
                         });
 
                     }
-
+                    $('select').selectize({
+                        sortField: 'text'
+                    });
                 }
             });
 
         }, 500);
 
     })
+
     $Vue.component('lp-quiz-question-meta', {
         template: '#tmpl-lp-quiz-question-meta',
         props: ['question'],

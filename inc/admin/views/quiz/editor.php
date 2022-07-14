@@ -184,6 +184,14 @@ jQuery(function($) {
                         question: this.new_question
                     });
                     this.new_question.title = '';
+                    $('ul.question-types').click(function(e) {
+                        setTimeout(() => {
+                            $('select').selectize({
+                                sortField: 'text'
+                            });
+                        }, 500);
+
+                    });
                 }
             },
             // open modal

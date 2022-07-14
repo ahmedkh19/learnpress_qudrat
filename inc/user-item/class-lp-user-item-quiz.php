@@ -603,7 +603,7 @@ class LP_User_Item_Quiz extends LP_User_Item {
 				}
 			}
 
-			$result['tags'] = $questions_tags;
+			$result['tags'] = [$questions_tags];
 
 			if ( $result['user_mark'] < 0 ) {
 				$result['user_mark'] = 0;

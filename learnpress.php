@@ -1088,3 +1088,73 @@ function remove_update_notification($value) {
      unset($value->response[ plugin_basename(__FILE__) ]);
      return $value;
 } 
+
+function cptui_register_my_cpts_folder_quizzes() {
+
+	/**
+	 * Post Type: المجلدات.
+	 */
+
+	$labels = [
+		"name" => __( "المجلدات", "twentytwentytwo" ),
+		"singular_name" => __( "المجلد", "twentytwentytwo" ),
+		"menu_name" => __( "مجلداتي", "twentytwentytwo" ),
+		"all_items" => __( "جميع المجلدات", "twentytwentytwo" ),
+		"add_new" => __( "إضافة مجلد جديد", "twentytwentytwo" ),
+		"add_new_item" => __( "إضافة مجلد جديد", "twentytwentytwo" ),
+		"edit_item" => __( "التعديل على المجلد", "twentytwentytwo" ),
+		"new_item" => __( "مجلد جديد", "twentytwentytwo" ),
+		"view_item" => __( "رؤية المجلد", "twentytwentytwo" ),
+		"view_items" => __( "رؤية جميع المجلدات", "twentytwentytwo" ),
+		"search_items" => __( "البحث عن مجلد", "twentytwentytwo" ),
+		"not_found" => __( "لم يتم إيجاد المجلد المطلوب", "twentytwentytwo" ),
+		"not_found_in_trash" => __( "لم يتم إيجاد المجلد في المهملات", "twentytwentytwo" ),
+		"parent" => __( "المجلد الرئيسي", "twentytwentytwo" ),
+		"set_featured_image" => __( "إضافة الصورة المميزة", "twentytwentytwo" ),
+		"remove_featured_image" => __( "حذف الصورة المميزة", "twentytwentytwo" ),
+		"use_featured_image" => __( "استخدمها كصورة مميزة", "twentytwentytwo" ),
+		"archives" => __( "أرشيف المجلدات", "twentytwentytwo" ),
+		"insert_into_item" => __( "ادخال في المجلد", "twentytwentytwo" ),
+		"uploaded_to_this_item" => __( "تمت عملية الرفع الى هذا المجلد", "twentytwentytwo" ),
+		"filter_items_list" => __( "تصفية قائمة المجلدات", "twentytwentytwo" ),
+		"items_list" => __( "قائمة المجلدات", "twentytwentytwo" ),
+		"name_admin_bar" => __( "المجلد", "twentytwentytwo" ),
+		"item_published" => __( "تم نشر المجلد", "twentytwentytwo" ),
+		"item_published_privately" => __( "تم تحديث المجلد ليكون خاصا", "twentytwentytwo" ),
+		"item_reverted_to_draft" => __( "التراجع عن حذف المجلد", "twentytwentytwo" ),
+		"item_updated" => __( "تم تحديث المجلد", "twentytwentytwo" ),
+		"parent_item_colon" => __( "المجلد الرئيسي", "twentytwentytwo" ),
+	];
+
+	$args = [
+		"label" => __( "المجلدات", "twentytwentytwo" ),
+		"labels" => $labels,
+		"description" => "",
+		"public" => true,
+		"publicly_queryable" => true,
+		"show_ui" => true,
+		"show_in_rest" => true,
+		"rest_base" => "",
+		"rest_controller_class" => "WP_REST_Posts_Controller",
+		"rest_namespace" => "wp/v2",
+		"has_archive" => false,
+		"show_in_menu" => true,
+		"show_in_nav_menus" => true,
+		"delete_with_user" => false,
+		"exclude_from_search" => false,
+		"capability_type" => "post",
+		"map_meta_cap" => true,
+		"hierarchical" => false,
+		"can_export" => true,
+		"rewrite" => [ "slug" => "folder-quizzes", "with_front" => true ],
+		"query_var" => true,
+		"menu_position" => 5,
+		"menu_icon" => "dashicons-open-folder",
+		"supports" => [ "title", "editor", "thumbnail" ],
+		"show_in_graphql" => false,
+	];
+
+	register_post_type( "folder-quizzes", $args );
+}
+
+add_action( 'init', 'cptui_register_my_cpts_folder_quizzes' );
