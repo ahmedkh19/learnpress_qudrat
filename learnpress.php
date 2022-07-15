@@ -1158,3 +1158,17 @@ function cptui_register_my_cpts_folder_quizzes() {
 }
 
 add_action( 'init', 'cptui_register_my_cpts_folder_quizzes' );
+
+// Requires https://wordpress.org/plugins/acf-to-rest-api/
+add_filter( 'acf/rest_api/folder-quizzes/get_fields', function( $data, $request ) {
+	$folders = $data;
+    if( isset( $data['acf'] ) ) {
+		for ($i=0; $i < count($data['acf']['quizzes_folder']); $i++) { 
+			$data['acf']['quizzes_folder'][$i] = [
+				'id' => $data['acf']['quizzes_folder'][$i],
+				'title' => get_the_title($data['acf']['quizzes_folder'][$i])
+			];
+		}
+	}   
+	return $data;
+}, 10, 3 );
