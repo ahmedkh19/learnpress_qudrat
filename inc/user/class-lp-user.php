@@ -521,14 +521,18 @@ class LP_User extends LP_Abstract_User {
 				);
 			}
 
-			if ( ! $this->has_enrolled_course( $course_id ) || ! $this->is_course_in_progress( $course_id ) ) {
-				if ( ! $course->is_no_required_enroll() ) {
-					throw new Exception(
-						__( 'Please enroll course before starting quiz.', 'learnpress' ),
-						LP_COURSE_IS_FINISHED
-					);
-				}
-			}
+			/*
+			// Customized
+			// Disable enroll requirement
+			*/
+			// if ( ! $this->has_enrolled_course( $course_id ) || ! $this->is_course_in_progress( $course_id ) ) {
+			// 	if ( ! $course->is_no_required_enroll() ) {
+			// 		throw new Exception(
+			// 			__( 'Please enroll course before starting quiz.', 'learnpress' ),
+			// 			LP_COURSE_IS_FINISHED
+			// 		);
+			// 	}
+			// }
 
 			// Check if user has already started or completed quiz
 			if ( $this->has_item_status( array( 'started', 'completed' ), $quiz_id, $course_id ) ) {
