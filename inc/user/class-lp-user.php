@@ -525,14 +525,14 @@ class LP_User extends LP_Abstract_User {
 			// Customized
 			// Disable enroll requirement
 			*/
-			// if ( ! $this->has_enrolled_course( $course_id ) || ! $this->is_course_in_progress( $course_id ) ) {
-			// 	if ( ! $course->is_no_required_enroll() ) {
-			// 		throw new Exception(
-			// 			__( 'Please enroll course before starting quiz.', 'learnpress' ),
-			// 			LP_COURSE_IS_FINISHED
-			// 		);
-			// 	}
-			// }
+			if ( ! $this->has_enrolled_course( $course_id ) || ! $this->is_course_in_progress( $course_id ) ) {
+				if ( ! $course->is_no_required_enroll() ) {
+					throw new Exception(
+						__( 'Please enroll course before starting quiz.', 'learnpress' ),
+						LP_COURSE_IS_FINISHED
+					);
+				}
+			}
 
 			// Check if user has already started or completed quiz
 			if ( $this->has_item_status( array( 'started', 'completed' ), $quiz_id, $course_id ) ) {
@@ -674,16 +674,16 @@ class LP_User extends LP_Abstract_User {
 			}
 
 			// Check if user has already started or completed quiz
-			if ( ! $this->has_item_status( array( 'completed' ), $quiz_id, $course_id ) ) {
-				throw new Exception(
-					sprintf(
-						__( '%1$s::%2$s - User has not completed quiz.', 'learnpress' ),
-						__CLASS__,
-						__FUNCTION__
-					),
-					LP_QUIZ_HAS_STARTED_OR_COMPLETED
-				);
-			}
+			// if ( ! $this->has_item_status( array( 'completed' ), $quiz_id, $course_id ) ) {
+			// 	throw new Exception(
+			// 		sprintf(
+			// 			__( '%1$s::%2$s - User has not completed quiz.', 'learnpress' ),
+			// 			__CLASS__,
+			// 			__FUNCTION__
+			// 		),
+			// 		LP_QUIZ_HAS_STARTED_OR_COMPLETED
+			// 	);
+			// }
 
 			$allow_attempts = learn_press_get_quiz_max_retrying( $quiz_id, $course_id );
 
