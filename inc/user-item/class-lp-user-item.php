@@ -1157,4 +1157,3 @@ class LP_User_Item extends LP_Abstract_Object_Data implements ArrayAccess {
 		// TODO: Implement offsetExists() method.
 	}
 }
-

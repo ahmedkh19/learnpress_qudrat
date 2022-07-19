@@ -1162,7 +1162,6 @@ add_action( 'init', 'cptui_register_my_cpts_folder_quizzes' );
 // Requires https://wordpress.org/plugins/acf-to-rest-api/
 // WEBSITE_LINK/wp-json/wp/v2/folder-quizzes?_fields=acf,title,id
 add_filter( 'acf/rest_api/folder-quizzes/get_fields', function( $data, $request ) {
-	$folders = $data;
     if( isset( $data['acf'] ) ) {
 		for ($i=0; $i < count($data['acf']['quizzes_folder']); $i++) { 
 			$data['acf']['quizzes_folder'][$i] = [

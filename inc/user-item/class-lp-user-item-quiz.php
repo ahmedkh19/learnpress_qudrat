@@ -604,6 +604,7 @@ class LP_User_Item_Quiz extends LP_User_Item {
 			}
 
 			$result['tags'] = $questions_tags;
+			$result['title'] = get_the_title($this->get_item_id());
 
 			if ( $result['user_mark'] < 0 ) {
 				$result['user_mark'] = 0;
