@@ -450,6 +450,7 @@ class LP_Jwt_Quiz_V1_Controller extends LP_REST_Jwt_Posts_Controller {
 
 			$output = array(
 				'status'            => $status,
+				'test'            => 'status',
 				'attempts'          => $user_quiz->get_attempts(),
 				'checked_questions' => $checked_questions,
 				'start_time'        => lp_jwt_prepare_date_response( $user_quiz->get_start_time()->toSql( false ) ),
