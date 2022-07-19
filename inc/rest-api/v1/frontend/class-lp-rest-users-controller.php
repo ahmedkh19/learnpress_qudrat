@@ -338,7 +338,7 @@ class LP_REST_Users_Controller extends LP_Abstract_REST_Controller {
 					'show_correct_review' => $show_correct_review,
 				)
 			);
-
+			$results['title'] = get_the_title( $item_id );
 			$results['question_ids'] = $question_ids;
 			$results['questions']    = $questions;
 			$results['total_time']   = $time_remaining;
