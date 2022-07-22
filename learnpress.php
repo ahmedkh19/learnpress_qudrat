@@ -1152,6 +1152,7 @@ function cptui_register_my_cpts_folder_quizzes() {
 		"menu_icon" => "dashicons-open-folder",
 		"supports" => [ "title", "editor", "thumbnail" ],
 		"show_in_graphql" => false,
+		'taxonomies'  => array( 'category' ),
 	];
 
 	register_post_type( "folder-quizzes", $args );
