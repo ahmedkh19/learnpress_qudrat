@@ -503,6 +503,9 @@ class LP_User extends LP_Abstract_User {
 
 			// Validate course and quiz
 			$course_id = $this->_verify_course_item( $quiz_id, $course_id );
+			// Customized
+			// Disable course requirement to start the quiz (should if statement below commented)
+
 			if ( ! $course_id ) {
 				throw new Exception(
 					__( 'Course does not exist or does not contain the quiz', 'learnpress' ),
@@ -524,15 +527,19 @@ class LP_User extends LP_Abstract_User {
 			/*
 			// Customized
 			// Disable enroll requirement
+			// Disable course requirement to start the quiz (IF THE QUIZ IS NOT RELATED TO A COURSE)
 			*/
-			if ( ! $this->has_enrolled_course( $course_id ) || ! $this->is_course_in_progress( $course_id ) ) {
-				if ( ! $course->is_no_required_enroll() ) {
-					throw new Exception(
-						__( 'Please enroll course before starting quiz.', 'learnpress' ),
-						LP_COURSE_IS_FINISHED
-					);
+			if ($course_id) {
+				if ( ! $this->has_enrolled_course( $course_id ) || ! $this->is_course_in_progress( $course_id ) ) {
+					if ( ! $course->is_no_required_enroll() ) {
+						throw new Exception(
+							__( 'Please enroll course before starting quiz.', 'learnpress' ),
+							LP_COURSE_IS_FINISHED
+						);
+					}
 				}
 			}
+
 
 			// Check if user has already started or completed quiz
 			if ( $this->has_item_status( array( 'started', 'completed' ), $quiz_id, $course_id ) ) {
@@ -672,6 +679,11 @@ class LP_User extends LP_Abstract_User {
 				);
 
 			}
+
+			/*
+			* Customized
+			* Disable already started/Completed quiz
+			*/
 
 			// Check if user has already started or completed quiz
 			// if ( ! $this->has_item_status( array( 'completed' ), $quiz_id, $course_id ) ) {

@@ -271,10 +271,10 @@ class LP_REST_Users_Controller extends LP_Abstract_REST_Controller {
 			$user   = learn_press_get_user( $user_id );
 			$course = learn_press_get_course( $course_id );
 			$quiz   = learn_press_get_quiz( $item_id );
-
-			if ( ! $course ) {
-				throw new Exception( __( 'Course is invalid!', 'learnpress' ) );
-			}
+			// Customized
+			// if ( ! $course ) {
+			// 	throw new Exception( __( 'Course is invalid!', 'learnpress' ) );
+			// }
 
 			if ( ! $quiz ) {
 				throw new Exception( __( 'Quiz is invalid!', 'learnpress' ) );
@@ -493,50 +493,53 @@ class LP_REST_Users_Controller extends LP_Abstract_REST_Controller {
 			$user       = learn_press_get_user( $user_id );
 			$course     = learn_press_get_course( $course_id );
 
+			// Customized (NO COURSE REQUIRED) -- DISABLED FOR NOW
 			if ( ! $course ) {
 				throw new Exception( 'Course is invalid!' );
 			}
 
 			// Course is no required enroll
-			if ( $course->is_no_required_enroll() ) {
-				$no_required_enroll = new LP_Course_No_Required_Enroll( $course );
+			if ($course) {
+				if ( $course->is_no_required_enroll() ) {
+					$no_required_enroll = new LP_Course_No_Required_Enroll( $course );
 
-				// Use for Review Quiz.
-				$quiz = learn_press_get_quiz( $item_id );
+					// Use for Review Quiz.
+					$quiz = learn_press_get_quiz( $item_id );
 
-				if ( ! $quiz ) {
-					throw new Exception( __( 'Quiz is invalid!', 'learnpress' ) );
+					if ( ! $quiz ) {
+						throw new Exception( __( 'Quiz is invalid!', 'learnpress' ) );
+					}
+
+					$result = $no_required_enroll->get_result_quiz( $quiz, $answered );
+
+					// Set time spent
+					$interval             = new LP_Duration( $time_spend );
+					$interval             = $interval->to_timer();
+					$result['time_spend'] = $interval;
+					// End
+
+					$result['status'] = LP_ITEM_COMPLETED;
+					//$result['answered']  = $result['questions'];
+					$result['attempts']  = [];
+					$result['results']   = $result;
+					$response['status']  = 'success';
+					$response['results'] = $result;
+
+					//learn_press_setcookie( 'quiz_submit_status_' . $course_id . '_' . $item_id . '', 'completed', time() + ( 7 * DAY_IN_SECONDS ), false );
+
+					return rest_ensure_response( $response );
 				}
-
-				$result = $no_required_enroll->get_result_quiz( $quiz, $answered );
-
-				// Set time spent
-				$interval             = new LP_Duration( $time_spend );
-				$interval             = $interval->to_timer();
-				$result['time_spend'] = $interval;
-				// End
-
-				$result['status'] = LP_ITEM_COMPLETED;
-				//$result['answered']  = $result['questions'];
-				$result['attempts']  = [];
-				$result['results']   = $result;
-				$response['status']  = 'success';
-				$response['results'] = $result;
-
-				//learn_press_setcookie( 'quiz_submit_status_' . $course_id . '_' . $item_id . '', 'completed', time() + ( 7 * DAY_IN_SECONDS ), false );
-
-				return rest_ensure_response( $response );
 			}
 
-			$user_course = $user->get_course_data( $course_id );
 
+			$user_course = $user->get_course_data( $course_id );
 			// Course required enroll
 			if ( ! $user_course ) {
 				throw new Exception( 'User not enrolled course!' );
 			}
 
+			//$user_quiz = $user_course->get_item( 16180 );
 			$user_quiz = $user_course->get_item( $item_id );
-
 			if ( ! $user_quiz ) {
 				throw new Exception();
 			}

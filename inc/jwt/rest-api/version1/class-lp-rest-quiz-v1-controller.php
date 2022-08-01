@@ -225,8 +225,9 @@ class LP_Jwt_Quiz_V1_Controller extends LP_REST_Jwt_Posts_Controller {
 		$response  = new LP_REST_Response();
 		$quiz_id   = isset( $request['id'] ) ? absint( $request['id'] ) : '';
 		$course_id = $this->get_course_by_item_id( $quiz_id );
-
-		if ( empty( $quiz_id ) || empty( $course_id ) ) {
+		//Customized
+		//if ( empty( $quiz_id ) || empty( $course_id ) ) {
+		if ( empty( $quiz_id ) ) {
 			$response->status  = 'error';
 			$response->message = esc_html__( 'No Quiz ID or Quiz is not assigned in Course.', 'learnpress' );
 
@@ -279,8 +280,9 @@ class LP_Jwt_Quiz_V1_Controller extends LP_REST_Jwt_Posts_Controller {
 		$answered = isset( $request['answered'] ) ? wp_unslash( $request['answered'] ) : '';
 
 		$course_id = $this->get_course_by_item_id( $quiz_id );
-
-		if ( empty( $quiz_id ) || empty( $course_id ) ) {
+		//Customized (Course)
+		//if ( empty( $quiz_id ) || empty( $course_id ) ) {
+		  if (empty($quiz_id) && ! $course->is_no_required_enroll) {
 			$response->status  = 'error';
 			$response->message = esc_html__( 'No Quiz ID or Quiz is not assigned in Course.', 'learnpress' );
 
